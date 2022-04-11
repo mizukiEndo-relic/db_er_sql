@@ -1,12 +1,23 @@
-version: "3"
+version: "3.8"
 services:
   mysql:
-    image: mysql:latest
-    ports:
-      - "3308:3306"
-    platform: linux/amd64
-    environment:
-      - MYSQL_ALLOW_EMPTY_PASSWORD=true
-      - MYSQL_ROOT_PASSWORD=secret
+    image: mysql:5.7
     volumes:
       - ./db:/var/lib/mysql
+    ports:
+      - "43306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=mysql
+      - PMA_USER=root
+      - PMA_PASSWORD=secret
+    links:
+      - mysql
+    ports:
+      - 4040:80
+    volumes:
+      - ./phpmyadmin/sessions:/sessions
